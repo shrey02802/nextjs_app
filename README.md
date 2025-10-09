@@ -145,6 +145,7 @@ Through this project, I learned how to:
       📦 GitHub
 
 📜 License
+          
           This project is open-source and available under the MIT License.
 
 ⭐ If you found this project useful, give it a star on GitHub!
