@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Next.js Docker GHCR Pipeline  
 
-## Getting Started
+A simple **Next.js starter app** containerized with **Docker** and automated using **GitHub Actions** to build and push Docker images to the **GitHub Container Registry (GHCR)**.  
 
-First, run the development server:
+This project focuses on **DevOps automation workflows**, not app development.  
+It demonstrates the end-to-end CI/CD process — from code commit → container image → registry → deployment on Ubuntu (EC2).  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧩 Tech Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Frontend Framework:** Next.js (Basic Starter Template)  
+- **Runtime:** Node.js 20  
+- **Containerization:** Docker  
+- **Automation:** GitHub Actions (CI/CD)  
+- **Image Registry:** GitHub Container Registry (GHCR)  
+- **OS/Environment:** Ubuntu (EC2 Instance)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📁 Folder Structure
 
-To learn more about Next.js, take a look at the following resources:
+nextjs-docker-ghcr-pipeline/
+│
+├── Dockerfile
+├── .dockerignore
+├── package.json
+├── next.config.js
+├── pages/
+├── public/
+└── .github/
+└── workflows/
+└── docker-build.yml
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+yaml
+Copy code
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ⚙️ Project Setup
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1️⃣ Clone the Repository
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+          git clone https://github.com/<your-username>/nextjs-docker-ghcr-pipeline.git
+          cd nextjs-docker-ghcr-pipeline
+2️⃣ Install Dependencies
+         
+          npm install
+3️⃣ Run Locally
+          
+          npm run dev
+          The app will be accessible at: http://localhost:3000
+
+🐳 Docker Commands
+Build Docker Image
+          
+          docker build -t nextjs-ghcr-app .
+Run Container
+
+          docker run -p 3000:3000 nextjs-ghcr-app
+
+
+🔁 GitHub Actions Workflow (CI/CD)
+This workflow automatically:
+
+    Builds the Docker image when code is pushed to main
+
+    Tags the image as latest
+
+    Pushes it to GitHub Container Registry (GHCR)
+
+Workflow File: .github/workflows/docker-build.yml
+
+
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+  
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/nextjs-ghcr-app:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/${{ github.repository_owner }}/nextjs-ghcr-app:latest
+🧠 Learning Outcomes
+Through this project, I learned how to:
+
+    ✅ Containerize a web app using Docker
+    ✅ Create and configure a GitHub Actions CI/CD workflow
+    ✅ Push Docker images securely to GHCR
+    ✅ Deploy and test containers on Ubuntu EC2
+    ✅ Understand the DevOps lifecycle from source → automation → deployment
+
+🔧 Requirements
+
+    Node.js 20+  
+    
+    Docker installed on local or EC2 machine
+    
+    GitHub account with Actions enabled
+    
+    Ubuntu EC2 instance (for testing)
+
+🧱 Pipeline Overview
+
+
+    Developer Commit
+           ↓
+    GitHub Repository
+           ↓
+    GitHub Actions (CI/CD Workflow)
+           ↓
+    Docker Image Build
+           ↓
+    Push to GitHub Container Registry (GHCR)
+           ↓
+    Run Container on Ubuntu EC2
+
+
+👨‍💻 Author
+
+      Shreyas Deshpande
+      Cloud & DevOps Engineer | Docker | GitHub Actions | CI/CD | Cloud Automation
+      🔗 LinkedIn
+      📦 GitHub
+
+📜 License
+          This project is open-source and available under the MIT License.
+
+⭐ If you found this project useful, give it a star on GitHub!
+
+
+
